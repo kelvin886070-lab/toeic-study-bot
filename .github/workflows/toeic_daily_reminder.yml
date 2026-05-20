@@ -1,0 +1,30 @@
+name: TOEIC Daily Reminder
+
+on:
+  schedule:
+    # 台灣時間早上 9:00 = UTC 01:00
+    - cron: '0 1 * * *'
+  # 允許手動觸發（測試用）
+  workflow_dispatch:
+
+jobs:
+  send-reminder:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Send daily TOEIC reminder
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python toeic_reminder.py
