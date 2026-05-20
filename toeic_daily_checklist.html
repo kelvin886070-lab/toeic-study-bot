@@ -4,335 +4,229 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>TOEIC 每日學習清單</title>
+<title>TOEIC Daily</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;600;700;800&display=swap');
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'DM Sans',sans-serif;background:#07091a;color:#e2e8f0;min-height:100vh;}
-.app{max-width:680px;margin:0 auto;padding:20px 16px 60px;}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #000; color: #fff; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif; -webkit-font-smoothing: antialiased; }
+.app { max-width: 600px; margin: 0 auto; padding: 32px 20px 60px; }
 
 /* Header */
-.hdr{margin-bottom:22px;}
-.hdr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
-.brand{font-size:0.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#475569;}
-.exam-badge{font-family:'DM Mono',monospace;font-size:0.78rem;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.25);color:#f87171;padding:3px 10px;border-radius:12px;}
-.date-display{font-family:'DM Mono',monospace;font-size:0.85rem;color:#334155;}
+.header { border-bottom: 1px solid #1a1a1a; padding-bottom: 24px; margin-bottom: 28px; }
+.brand { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: #555; margin-bottom: 16px; }
+.date-line { font-size: 13px; color: #555; margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+.target-line { font-size: 13px; color: #777; margin-bottom: 12px; }
+.target-line span { color: #fff; }
+.progress-container { margin-top: 4px; }
+.progress-label { font-size: 11px; color: #444; margin-bottom: 6px; display: flex; justify-content: space-between; }
+.progress-bar { height: 1px; background: #1a1a1a; width: 100%; }
+.progress-fill { height: 100%; background: #fff; transition: width 0.4s ease; }
 
-/* Countdown */
-.countdown{background:linear-gradient(135deg,#0d1b3e,#111827);border:1px solid #1e2d4f;border-radius:14px;padding:16px 20px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;}
-.cd-left{font-size:0.82rem;color:#64748b;}
-.cd-days{font-family:'DM Mono',monospace;font-size:2rem;font-weight:800;color:#f87171;line-height:1;}
-.cd-label{font-size:0.7rem;color:#f87171;margin-top:2px;}
-.cd-target{text-align:right;}
-.cd-score{font-family:'DM Mono',monospace;font-size:1.4rem;font-weight:800;color:#38bdf8;}
-.cd-slabel{font-size:0.7rem;color:#38bdf8;}
-.progress-row{display:flex;align-items:center;gap:10px;margin-top:10px;}
-.progress-bar{flex:1;height:4px;background:#1a2540;border-radius:2px;overflow:hidden;}
-.progress-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,#f87171,#fbbf24);transition:width .4s;}
-.progress-text{font-family:'DM Mono',monospace;font-size:0.72rem;color:#475569;white-space:nowrap;}
+/* Quote */
+.quote-block { padding: 24px 0; border-bottom: 1px solid #1a1a1a; margin-bottom: 28px; }
+.quote-text { font-size: 14px; line-height: 1.7; color: #888; font-style: italic; margin-bottom: 6px; }
+.quote-author { font-size: 11px; color: #444; letter-spacing: 0.05em; }
 
-/* Day header */
-.day-header{margin-bottom:14px;}
-.day-title{font-size:1.1rem;font-weight:700;color:#f1f5f9;margin-bottom:4px;}
-.day-sub{font-size:0.8rem;color:#475569;}
+/* Tasks */
+.tasks-header { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #444; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+.tasks-done { font-weight: 400; color: #333; }
+.task-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-bottom: 1px solid #111; cursor: pointer; user-select: none; transition: opacity 0.2s; }
+.task-item:last-child { border-bottom: none; }
+.task-item.done { opacity: 0.35; }
+.checkbox { width: 16px; height: 16px; border: 1px solid #333; flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+.checkbox.checked { background: #fff; border-color: #fff; }
+.check-mark { width: 8px; height: 5px; border-left: 1.5px solid #000; border-bottom: 1.5px solid #000; transform: rotate(-45deg) translate(1px, -1px); display: none; }
+.checkbox.checked .check-mark { display: block; }
+.task-content { flex: 1; }
+.task-text { font-size: 14px; color: #ccc; line-height: 1.5; }
+.task-item.done .task-text { text-decoration: line-through; color: #333; }
+.task-time { font-size: 11px; color: #444; margin-top: 3px; font-variant-numeric: tabular-nums; }
 
-/* Carryover section */
-.carryover{background:rgba(251,191,36,0.06);border:1px solid rgba(251,191,36,0.2);border-radius:12px;padding:14px 16px;margin-bottom:14px;}
-.co-title{font-size:0.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fbbf24;margin-bottom:10px;}
-.co-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(251,191,36,0.08);}
-.co-item:last-child{border-bottom:none;}
-
-/* Task list */
-.task-section{background:#0f1624;border:1px solid #1a2540;border-radius:14px;padding:16px;margin-bottom:14px;}
-.section-title{font-size:0.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
-.st-grammar{color:#818cf8;}
-.st-vocab{color:#34d399;}
-.st-listen{color:#fb923c;}
-.task-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid #1a2540;cursor:pointer;transition:opacity .15s;}
-.task-item:last-child{border-bottom:none;}
-.task-item.done{opacity:0.45;}
-.checkbox{width:20px;height:20px;border-radius:5px;border:2px solid #1e3a5f;background:#060a14;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .2s;}
-.checkbox.checked{background:#34d399;border-color:#34d399;}
-.check-icon{color:#fff;font-size:12px;font-weight:700;}
-.task-text{font-size:0.92rem;color:#cbd5e1;line-height:1.5;flex:1;}
-.task-item.done .task-text{text-decoration:line-through;color:#334155;}
-.task-time{font-family:'DM Mono',monospace;font-size:0.7rem;color:#334155;margin-top:2px;white-space:nowrap;}
+/* Carryover */
+.carryover-header { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #555; margin-bottom: 14px; margin-top: 28px; }
+.carryover-note { font-size: 11px; color: #333; margin-bottom: 16px; }
 
 /* All done */
-.all-done{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.2);border-radius:14px;padding:24px;text-align:center;margin-bottom:14px;}
-.done-emoji{font-size:2.5rem;margin-bottom:8px;}
-.done-title{font-size:1rem;font-weight:700;color:#34d399;margin-bottom:4px;}
-.done-sub{font-size:0.82rem;color:#475569;}
+.all-done { padding: 40px 0; text-align: center; }
+.all-done-title { font-size: 16px; color: #fff; margin-bottom: 8px; font-weight: 500; }
+.all-done-sub { font-size: 13px; color: #444; }
+
+/* No schedule */
+.no-schedule { padding: 40px 0; text-align: center; }
+.no-schedule p { font-size: 14px; color: #444; line-height: 1.7; }
 
 /* Notes */
-.note-section{background:#0a0f1e;border:1px solid #1a2540;border-radius:12px;padding:14px 16px;margin-bottom:14px;}
-.note-title{font-size:0.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#475569;margin-bottom:10px;}
-.note-textarea{width:100%;background:transparent;border:none;color:#94a3b8;font-size:0.85rem;font-family:'DM Sans',sans-serif;resize:none;outline:none;min-height:60px;line-height:1.6;}
-
-/* Stats */
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
-.stat{background:#0f1624;border:1px solid #1a2540;border-radius:10px;padding:12px;text-align:center;}
-.stat-num{font-family:'DM Mono',monospace;font-size:1.4rem;font-weight:800;}
-.stat-lbl{font-size:0.7rem;color:#475569;margin-top:2px;}
+.notes-section { margin-top: 40px; border-top: 1px solid #1a1a1a; padding-top: 24px; }
+.notes-label { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #333; margin-bottom: 12px; }
+.notes-area { width: 100%; background: transparent; border: none; color: #555; font-size: 13px; font-family: inherit; resize: none; outline: none; min-height: 80px; line-height: 1.7; }
+.notes-area::placeholder { color: #2a2a2a; }
 </style>
 </head>
 <body>
-<div class="app" id="root"></div>
+<div class="app" id="root">
+  <div style="color:#333;padding:40px 0;text-align:center;font-size:13px;">Loading...</div>
+</div>
 <script>
 const EXAM_DATE = new Date('2026-05-31');
-const TARGET_SCORE = 550;
+const TOTAL_DAYS = 11;
 
-const SCHEDULE = [
-  { date:'2026-05-20', day:1,
-    grammar:[{text:'使役動詞快速複習（let/make/get/want）', time:'15 min'},{text:'條件句：現實vs非現實', time:'15 min'}],
-    vocab:[{text:'Priority 21 單字卡 — 第1輪', time:'20 min'},{text:'字尾辨認練習', time:'10 min'}],
-    listen:[]
-  },
-  { date:'2026-05-21', day:2,
-    grammar:[{text:'連接詞邏輯方向判斷（nevertheless/accordingly/while）', time:'15 min'},{text:'詞性變化：位置判斷法', time:'15 min'}],
-    vocab:[{text:'Vocab Day 1：商業動詞', time:'20 min'}],
-    listen:[{text:'TOEIC Part 1 題型熟悉（照片描述）', time:'10 min'}]
-  },
-  { date:'2026-05-22', day:3,
-    grammar:[{text:'關係子句：who/which/whose/whom', time:'15 min'},{text:'不定詞 vs 動名詞複習', time:'15 min'}],
-    vocab:[{text:'Vocab Day 2：財務用語', time:'20 min'},{text:'Priority 21 第2輪', time:'10 min'}],
-    listen:[]
-  },
-  { date:'2026-05-23', day:4,
-    grammar:[{text:'全科文法綜合練習（26題）', time:'30 min'}],
-    vocab:[{text:'Vocab Day 3：人資招募', time:'20 min'}],
-    listen:[{text:'TOEIC Part 2 題型：問答練習', time:'10 min'}]
-  },
-  { date:'2026-05-24', day:5,
-    grammar:[{text:'主詞動詞一致性（新考點）', time:'30 min'}],
-    vocab:[{text:'Vocab Day 4：會議溝通', time:'20 min'},{text:'錯誤單字複習', time:'10 min'}],
-    listen:[]
-  },
-  { date:'2026-05-25', day:6,
-    grammar:[{text:'Part 5 限時模擬（20題，15分鐘內完成）', time:'20 min'},{text:'對答案＋分析錯誤', time:'10 min'}],
-    vocab:[{text:'Vocab Day 5：業務行銷', time:'20 min'}],
-    listen:[{text:'TOEIC Part 3 短對話練習', time:'10 min'}]
-  },
-  { date:'2026-05-26', day:7,
-    grammar:[{text:'Part 6 語境題型練習', time:'20 min'},{text:'分詞形容詞＋despite複習', time:'10 min'}],
-    vocab:[{text:'Vocab Day 6：物流運輸', time:'20 min'}],
-    listen:[{text:'TOEIC Part 4 短獨白練習', time:'10 min'}]
-  },
-  { date:'2026-05-27', day:8,
-    grammar:[{text:'Part 7 閱讀技巧：先看題目再讀文章', time:'20 min'},{text:'單篇閱讀練習', time:'10 min'}],
-    vocab:[{text:'Vocab Day 7：辦公場所', time:'20 min'},{text:'Priority 21 第3輪', time:'10 min'}],
-    listen:[]
-  },
-  { date:'2026-05-28', day:9,
-    grammar:[{text:'全科模擬考：Part 5+6（計時30分鐘）', time:'30 min'}],
-    vocab:[{text:'對答案＋記錄錯題', time:'20 min'}],
-    listen:[{text:'聽力綜合複習', time:'10 min'}]
-  },
-  { date:'2026-05-29', day:10,
-    grammar:[{text:'弱點考點針對複習（根據模擬考錯題）', time:'30 min'}],
-    vocab:[{text:'Priority 21 最終確認', time:'20 min'}],
-    listen:[{text:'聽力最後練習', time:'10 min'}]
-  },
-  { date:'2026-05-30', day:11,
-    grammar:[{text:'輕度複習：翻看語法規則表', time:'20 min'}],
-    vocab:[{text:'瀏覽單字卡（不背新單字）', time:'10 min'}],
-    listen:[{text:'放鬆，保持好狀態迎接明天', time:''}]
-  },
+const QUOTES = [
+  {text:"The secret of getting ahead is getting started.", by:"Mark Twain"},
+  {text:"It does not matter how slowly you go as long as you do not stop.", by:"Confucius"},
+  {text:"Success is the sum of small efforts, repeated day in and day out.", by:"Robert Collier"},
+  {text:"You don't have to be great to start, but you have to start to be great.", by:"Zig Ziglar"},
+  {text:"Hard work beats talent when talent doesn't work hard.", by:"Tim Notke"},
+  {text:"The expert in anything was once a beginner.", by:"Helen Hayes"},
+  {text:"Small daily improvements over time lead to stunning results.", by:"Robin Sharma"},
+  {text:"Believe you can and you're halfway there.", by:"Theodore Roosevelt"},
+  {text:"Education is not the filling of a pail, but the lighting of a fire.", by:"W.B. Yeats"},
+  {text:"The man who moves a mountain begins by carrying away small stones.", by:"Confucius"},
+  {text:"An investment in knowledge pays the best interest.", by:"Benjamin Franklin"},
+  {text:"The beautiful thing about learning is that no one can take it away from you.", by:"B.B. King"},
+  {text:"Discipline is the bridge between goals and accomplishment.", by:"Jim Rohn"},
+  {text:"Don't watch the clock; do what it does. Keep going.", by:"Sam Levenson"},
+  {text:"Do something today that your future self will thank you for.", by:"Sean Patrick Flanery"},
+  {text:"Learning is a treasure that will follow its owner everywhere.", by:"Chinese Proverb"},
+  {text:"He who learns but does not think is lost.", by:"Confucius"},
+  {text:"Excellence is not a destination but a continuous journey.", by:"Brian Tracy"},
+  {text:"Push yourself, because no one else is going to do it for you.", by:"Unknown"},
+  {text:"A year from now you may wish you had started today.", by:"Karen Lamb"},
+  {text:"The only way to do great work is to love what you do.", by:"Steve Jobs"},
+  {text:"You don't need to be perfect. You just need to be consistent.", by:"Unknown"},
+  {text:"Language is the road map of a culture.", by:"Rita Mae Brown"},
+  {text:"Strive for progress, not perfection.", by:"Unknown"},
+  {text:"Education is the most powerful weapon which you can use to change the world.", by:"Nelson Mandela"},
+  {text:"The more that you read, the more things you will know.", by:"Dr. Seuss"},
+  {text:"He who learns but does not think is lost.", by:"Confucius"},
+  {text:"The capacity to learn is a gift; the ability to learn is a skill.", by:"Brian Herbert"},
+  {text:"Invest in yourself. Your career is the engine of your wealth.", by:"Paul Clitheroe"},
+  {text:"You are never too old to set another goal or to dream a new dream.", by:"C.S. Lewis"},
 ];
 
-function getTodayStr(){
-  const d=new Date();
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-}
-function getDaysUntilExam(){
-  const now=new Date();now.setHours(0,0,0,0);
-  const exam=new Date(EXAM_DATE);exam.setHours(0,0,0,0);
-  return Math.max(0,Math.ceil((exam-now)/(1000*60*60*24)));
-}
-function getProgress(){
-  const now=new Date();now.setHours(0,0,0,0);
-  const start=new Date('2026-05-20');start.setHours(0,0,0,0);
-  const total=11;
-  const done=Math.min(total,Math.max(0,Math.ceil((now-start)/(1000*60*60*24))));
-  return{done,total};
-}
-function getTodaySchedule(){
-  const today=getTodayStr();
-  return SCHEDULE.find(s=>s.date===today)||null;
-}
-function getYesterdayStr(){
-  const d=new Date();d.setDate(d.getDate()-1);
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-}
-function loadChecks(dateStr){
-  try{return JSON.parse(localStorage.getItem('checks_'+dateStr)||'{}');}catch{return{};}
-}
-function saveChecks(dateStr,data){
-  try{localStorage.setItem('checks_'+dateStr,JSON.stringify(data));}catch{}
-}
-function loadNote(dateStr){
-  try{return localStorage.getItem('note_'+dateStr)||'';}catch{return'';}
-}
-function saveNote(dateStr,note){
-  try{localStorage.setItem('note_'+dateStr,note);}catch{}
+const SCHEDULE = {
+  "2026-05-20":{day:1,tasks:[{text:"使役動詞快速複習（let/make/get/want）",time:"15 min"},{text:"條件句：現實 vs 非現實",time:"15 min"},{text:"Priority 21 單字卡 第1輪",time:"20 min"},{text:"字尾辨認練習",time:"10 min"}]},
+  "2026-05-21":{day:2,tasks:[{text:"連接詞邏輯方向判斷（nevertheless/accordingly/while）",time:"15 min"},{text:"詞性變化：位置判斷法",time:"15 min"},{text:"Vocab Day 1：商業動詞",time:"20 min"},{text:"TOEIC Part 1 題型熟悉（照片描述）",time:"10 min"}]},
+  "2026-05-22":{day:3,tasks:[{text:"關係子句：who/which/whose/whom",time:"15 min"},{text:"不定詞 vs 動名詞複習",time:"15 min"},{text:"Vocab Day 2：財務用語",time:"20 min"},{text:"Priority 21 第2輪",time:"10 min"}]},
+  "2026-05-23":{day:4,tasks:[{text:"全科文法綜合練習（26題）",time:"30 min"},{text:"Vocab Day 3：人資招募",time:"20 min"},{text:"TOEIC Part 2 題型：問答練習",time:"10 min"}]},
+  "2026-05-24":{day:5,tasks:[{text:"主詞動詞一致性（新考點）",time:"30 min"},{text:"Vocab Day 4：會議溝通",time:"20 min"},{text:"錯誤單字複習",time:"10 min"}]},
+  "2026-05-25":{day:6,tasks:[{text:"Part 5 限時模擬（20題，15分鐘內）",time:"20 min"},{text:"對答案＋分析錯誤",time:"10 min"},{text:"Vocab Day 5：業務行銷",time:"20 min"},{text:"TOEIC Part 3 短對話練習",time:"10 min"}]},
+  "2026-05-26":{day:7,tasks:[{text:"Part 6 語境題型練習",time:"20 min"},{text:"分詞形容詞＋despite複習",time:"10 min"},{text:"Vocab Day 6：物流運輸",time:"20 min"},{text:"TOEIC Part 4 短獨白練習",time:"10 min"}]},
+  "2026-05-27":{day:8,tasks:[{text:"Part 7 閱讀技巧：先看題目再讀文章",time:"20 min"},{text:"單篇閱讀練習",time:"10 min"},{text:"Vocab Day 7：辦公場所",time:"20 min"},{text:"Priority 21 第3輪",time:"10 min"}]},
+  "2026-05-28":{day:9,tasks:[{text:"全科模擬考：Part 5+6（計時30分鐘）",time:"30 min"},{text:"對答案＋記錄錯題",time:"20 min"},{text:"聽力綜合複習",time:"10 min"}]},
+  "2026-05-29":{day:10,tasks:[{text:"弱點考點針對複習（根據模擬考錯題）",time:"30 min"},{text:"Priority 21 最終確認",time:"20 min"},{text:"聽力最後練習",time:"10 min"}]},
+  "2026-05-30":{day:11,tasks:[{text:"輕度複習：翻看語法規則表",time:"20 min"},{text:"瀏覽單字卡（不背新單字）",time:"10 min"},{text:"放鬆，保持好狀態迎接明天",time:""}]},
+  "2026-05-31":{day:"exam",tasks:[{text:"今天是考試日",time:""}]},
+};
+
+function pad(n){return String(n).padStart(2,'0');}
+function todayStr(){const d=new Date();return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;}
+function ydayStr(){const d=new Date();d.setDate(d.getDate()-1);return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;}
+function daysLeft(){const now=new Date();now.setHours(0,0,0,0);const ex=new Date(EXAM_DATE);ex.setHours(0,0,0,0);return Math.max(0,Math.round((ex-now)/86400000));}
+function todayDisplay(){const d=new Date();return `${pad(d.getMonth()+1)}/${pad(d.getDate())}`;}
+function getDayNum(str){const s=SCHEDULE[str];return(s&&s.day!=="exam")?s.day:null;}
+function getQuote(){const d=new Date();const idx=(d.getFullYear()*366+d.getMonth()*31+d.getDate())%QUOTES.length;return QUOTES[idx];}
+
+function load(key){try{return JSON.parse(localStorage.getItem(key)||'{}');}catch{return{};}}
+function save(key,val){try{localStorage.setItem(key,JSON.stringify(val));}catch{}}
+function loadNote(k){try{return localStorage.getItem('note_'+k)||'';}catch{return '';}}
+function saveNote(k,v){try{localStorage.setItem('note_'+k,v);}catch{}}
+
+function getCarryover(){
+  const ys=ydayStr();
+  const ys2=SCHEDULE[ys];
+  if(!ys2||ys2.day==="exam")return[];
+  const yChecks=load('checks_'+ys);
+  return ys2.tasks.filter((_,i)=>!yChecks['t_'+i]);
 }
 
-let todayChecks={};
-let todayStr=getTodayStr();
-
-function getAllTasks(sched){
-  const all=[];
-  (sched.grammar||[]).forEach((t,i)=>all.push({...t,key:`g_${i}`,cat:'grammar'}));
-  (sched.vocab||[]).forEach((t,i)=>all.push({...t,key:`v_${i}`,cat:'vocab'}));
-  (sched.listen||[]).forEach((t,i)=>all.push({...t,key:`l_${i}`,cat:'listen'}));
-  return all;
-}
-function getYesterdayCarryover(){
-  const yStr=getYesterdayStr();
-  const ySched=SCHEDULE.find(s=>s.date===yStr);
-  if(!ySched)return[];
-  const yChecks=loadChecks(yStr);
-  const all=getAllTasks(ySched);
-  return all.filter(t=>!yChecks[t.key]);
-}
+let checks={};
+const ts=todayStr();
 
 function render(){
-  const root=document.getElementById('root');
-  todayStr=getTodayStr();
-  todayChecks=loadChecks(todayStr);
-  const daysLeft=getDaysUntilExam();
-  const prog=getProgress();
-  const progPct=Math.round((prog.done/prog.total)*100);
-  const today=new Date();
-  const dateLabel=`${today.getMonth()+1}月${today.getDate()}日`;
-  const todaySched=getTodaySchedule();
-  const carryover=getYesterdayCarryover();
-  const note=loadNote(todayStr);
+  checks=load('checks_'+ts);
+  const sched=SCHEDULE[ts];
+  const days=daysLeft();
+  const dayNum=getDayNum(ts);
+  const pct=dayNum?Math.round((dayNum/TOTAL_DAYS)*100):100;
+  const quote=getQuote();
+  const carryover=getCarryover();
+  const note=loadNote(ts);
 
-  let allTasks=todaySched?getAllTasks(todaySched):[];
-  const totalTasks=allTasks.length+carryover.length;
-  const doneTasks=allTasks.filter(t=>todayChecks[t.key]).length + carryover.filter((_,i)=>todayChecks['carry_'+i]).length;
+  let allTasks=sched&&sched.day!=="exam"?sched.tasks:[];
+  const totalT=allTasks.length+carryover.length;
+  const doneT=allTasks.filter((_,i)=>checks['t_'+i]).length
+             +carryover.filter((_,i)=>checks['c_'+i]).length;
 
   let html=`
-  <div class="hdr">
-    <div class="hdr-top">
-      <div class="brand">TOEIC 每日清單</div>
-      <div class="exam-badge">5/31 考試</div>
-    </div>
-    <div class="date-display">${dateLabel}（${['日','一','二','三','四','五','六'][today.getDay()]}）</div>
+  <div class="header">
+    <div class="brand">TOEIC Study Bot</div>
+    <div class="date-line">${todayDisplay()} ｜距考試 ${days} 天</div>
+    <div class="target-line">🎯 目標：<span>800 分起</span></div>
+    ${dayNum?`<div class="progress-container">
+      <div class="progress-label"><span>進度 Day ${dayNum} / ${TOTAL_DAYS}</span><span>${pct}%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+    </div>`:''}
   </div>
 
-  <div class="countdown">
-    <div class="cd-left">
-      <div class="cd-days">${daysLeft}</div>
-      <div class="cd-label">天後考試</div>
-    </div>
-    <div style="flex:1;padding:0 16px;">
-      <div class="progress-row">
-        <div class="progress-bar"><div class="progress-fill" style="width:${progPct}%"></div></div>
-        <div class="progress-text">${prog.done}/${prog.total}天</div>
-      </div>
-    </div>
-    <div class="cd-target">
-      <div class="cd-score">${TARGET_SCORE}</div>
-      <div class="cd-slabel">目標分數</div>
-    </div>
-  </div>
-
-  <div class="stats">
-    <div class="stat"><div class="stat-num" style="color:#34d399">${doneTasks}</div><div class="stat-lbl">已完成</div></div>
-    <div class="stat"><div class="stat-num" style="color:#f87171">${totalTasks-doneTasks}</div><div class="stat-lbl">待完成</div></div>
-    <div class="stat"><div class="stat-num" style="color:#fbbf24">${totalTasks>0?Math.round((doneTasks/totalTasks)*100):0}%</div><div class="stat-lbl">今日進度</div></div>
+  <div class="quote-block">
+    <div class="quote-text">"${quote.text}"</div>
+    <div class="quote-author">— ${quote.by}</div>
   </div>`;
 
-  // Carryover
-  if(carryover.length>0){
-    html+=`<div class="carryover"><div class="co-title">📌 昨日未完成（帶過來）</div>`;
-    carryover.forEach((t,i)=>{
-      const key='carry_'+i;
-      const done=!!todayChecks[key];
-      html+=`<div class="task-item${done?' done':''}" data-key="${key}" data-type="carryover">
-        <div class="checkbox${done?' checked'}">${done?'<span class="check-icon">✓</span>':''}</div>
-        <div style="flex:1"><div class="task-text">${t.text}</div>${t.time?`<div class="task-time">${t.time}</div>`:''}</div>
+  if(!sched){
+    html+=`<div class="no-schedule"><p>今天沒有排程任務。<br>好好休息，明天繼續。</p></div>`;
+  } else if(sched.day==="exam"){
+    html+=`<div class="all-done"><div class="all-done-title">今天是考試日</div><div class="all-done-sub">相信自己，發揮實力。</div></div>`;
+  } else {
+    html+=`<div class="tasks-header"><span>任務</span><span class="tasks-done">${doneT} / ${totalT} 完成</span></div>`;
+
+    allTasks.forEach((t,i)=>{
+      const done=!!checks['t_'+i];
+      html+=`<div class="task-item${done?' done':''}" data-key="t_${i}">
+        <div class="checkbox${done?' checked'}"><div class="check-mark"></div></div>
+        <div class="task-content">
+          <div class="task-text">${t.text}</div>
+          ${t.time?`<div class="task-time">${t.time}</div>`:''}
+        </div>
       </div>`;
     });
-    html+=`</div>`;
-  }
 
-  if(!todaySched){
-    if(daysLeft===0){
-      html+=`<div class="all-done"><div class="done-emoji">🎯</div><div class="done-title">考試日！加油！</div><div class="done-sub">相信自己，發揮實力。</div></div>`;
-    }else if(daysLeft<0){
-      html+=`<div class="all-done"><div class="done-emoji">✅</div><div class="done-title">考試已結束</div><div class="done-sub">等待第二次考試的備考計畫。</div></div>`;
-    }else{
-      html+=`<div class="all-done"><div class="done-emoji">📅</div><div class="done-title">今天沒有排程任務</div><div class="done-sub">好好休息，明天繼續！</div></div>`;
+    if(carryover.length>0){
+      html+=`<div class="carryover-header">昨日未完成</div>`;
+      carryover.forEach((t,i)=>{
+        const done=!!checks['c_'+i];
+        html+=`<div class="task-item${done?' done':''}" data-key="c_${i}">
+          <div class="checkbox${done?' checked'}"><div class="check-mark"></div></div>
+          <div class="task-content">
+            <div class="task-text">${t.text}</div>
+            ${t.time?`<div class="task-time">${t.time}</div>`:''}
+          </div>
+        </div>`;
+      });
     }
-  }else{
-    html+=`<div class="day-header"><div class="day-title">Day ${todaySched.day} — ${dateLabel}</div><div class="day-sub">今日任務 ${totalTasks} 項</div></div>`;
 
-    // Grammar section
-    if(todaySched.grammar.length>0){
-      html+=`<div class="task-section"><div class="section-title st-grammar">📚 文法練習</div>`;
-      todaySched.grammar.forEach((t,i)=>{
-        const key=`g_${i}`;const done=!!todayChecks[key];
-        html+=`<div class="task-item${done?' done':''}" data-key="${key}" data-type="today">
-          <div class="checkbox${done?' checked'}">${done?'<span class="check-icon">✓</span>':''}</div>
-          <div style="flex:1"><div class="task-text">${t.text}</div>${t.time?`<div class="task-time">${t.time}</div>`:''}</div>
-        </div>`;
-      });
-      html+=`</div>`;
-    }
-    // Vocab section
-    if(todaySched.vocab.length>0){
-      html+=`<div class="task-section"><div class="section-title st-vocab">📖 單字練習</div>`;
-      todaySched.vocab.forEach((t,i)=>{
-        const key=`v_${i}`;const done=!!todayChecks[key];
-        html+=`<div class="task-item${done?' done':''}" data-key="${key}" data-type="today">
-          <div class="checkbox${done?' checked'}">${done?'<span class="check-icon">✓</span>':''}</div>
-          <div style="flex:1"><div class="task-text">${t.text}</div>${t.time?`<div class="task-time">${t.time}</div>`:''}</div>
-        </div>`;
-      });
-      html+=`</div>`;
-    }
-    // Listen section
-    if(todaySched.listen.length>0){
-      html+=`<div class="task-section"><div class="section-title st-listen">🎧 聽力練習</div>`;
-      todaySched.listen.forEach((t,i)=>{
-        const key=`l_${i}`;const done=!!todayChecks[key];
-        html+=`<div class="task-item${done?' done':''}" data-key="${key}" data-type="today">
-          <div class="checkbox${done?' checked'}">${done?'<span class="check-icon">✓</span>':''}</div>
-          <div style="flex:1"><div class="task-text">${t.text}</div>${t.time?`<div class="task-time">${t.time}</div>`:''}</div>
-        </div>`;
-      });
-      html+=`</div>`;
-    }
-    if(doneTasks===totalTasks&&totalTasks>0){
-      html+=`<div class="all-done"><div class="done-emoji">🎉</div><div class="done-title">今日任務全部完成！</div><div class="done-sub">明天繼續保持，目標 550 加油！</div></div>`;
+    if(doneT===totalT&&totalT>0){
+      html+=`<div class="all-done" style="padding:28px 0 0;text-align:left;"><div class="all-done-title" style="font-size:14px;">今日任務完成</div><div class="all-done-sub">明天繼續。</div></div>`;
     }
   }
 
-  html+=`<div class="note-section">
-    <div class="note-title">📝 今日筆記</div>
-    <textarea class="note-textarea" id="noteArea" placeholder="記錄今天學到的重點或遇到的問題...">${note}</textarea>
+  html+=`<div class="notes-section">
+    <div class="notes-label">今日筆記</div>
+    <textarea class="notes-area" id="noteArea" placeholder="記錄重點...">${note}</textarea>
   </div>`;
 
-  root.innerHTML=html;
+  document.getElementById('root').innerHTML=html;
 
-  // Bind clicks
   document.querySelectorAll('.task-item').forEach(el=>{
     el.onclick=()=>{
       const key=el.dataset.key;
-      todayChecks[key]=!todayChecks[key];
-      saveChecks(todayStr,todayChecks);
+      checks[key]=!checks[key];
+      save('checks_'+ts,checks);
       render();
     };
   });
 
-  const noteArea=document.getElementById('noteArea');
-  if(noteArea){
-    noteArea.oninput=()=>saveNote(todayStr,noteArea.value);
-  }
+  const na=document.getElementById('noteArea');
+  if(na)na.oninput=()=>saveNote(ts,na.value);
 }
 
 render();
