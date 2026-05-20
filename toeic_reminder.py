@@ -15,7 +15,7 @@ CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 # ── 考試資訊 ──
 EXAM_DATE = date(2026, 5, 31)
 TARGET_SCORE = 550
-CHECKLIST_URL = "https://你的帳號.github.io/你的repo名/toeic_daily_checklist.html"
+CHECKLIST_URL = "https://kelvin886070-lab.github.io/toeic-study-bot/toeic_daily_checklist.html"
 
 # ── 11 天學習計畫 ──
 SCHEDULE = {
