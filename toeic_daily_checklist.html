@@ -3,54 +3,82 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>TOEIC Daily</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-html,body{background:#000;color:#fff;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;-webkit-font-smoothing:antialiased;}
-.app{max-width:580px;margin:0 auto;padding:32px 20px 80px;}
-.brand{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#444;margin-bottom:20px;}
-.meta{font-size:13px;color:#555;margin-bottom:4px;}
-.target{font-size:13px;color:#666;margin-bottom:14px;}
-.prog-label{display:flex;justify-content:space-between;font-size:10px;color:#333;letter-spacing:.06em;margin-bottom:5px;}
-.prog-bar{height:1px;background:#1a1a1a;width:100%;}
-.prog-fill{height:1px;background:#fff;}
-.divider{border:none;border-top:1px solid #111;margin:24px 0;}
-.quote{font-size:13px;color:#555;font-style:italic;line-height:1.7;margin-bottom:4px;}
-.quote-by{font-size:10px;color:#333;letter-spacing:.05em;}
-.section-label{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#333;margin-bottom:16px;display:flex;justify-content:space-between;}
-.task{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid #0e0e0e;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+html,body{background:#fafafa;color:#111;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;-webkit-font-smoothing:antialiased;}
+.app{max-width:580px;margin:0 auto;padding:28px 20px 80px;}
+
+/* Header */
+.brand{font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#999;margin-bottom:18px;}
+.meta-row{font-size:14px;color:#333;margin-bottom:3px;font-weight:500;}
+.target-row{font-size:13px;color:#666;margin-bottom:14px;}
+.prog-top{display:flex;justify-content:space-between;font-size:11px;color:#888;margin-bottom:6px;}
+.prog-bar{height:1px;background:#e0e0e0;width:100%;}
+.prog-fill{height:1px;background:#333;transition:width .3s;}
+hr{border:none;border-top:1px solid #ebebeb;margin:22px 0;}
+
+/* Quote */
+.quote{font-size:13px;color:#888;font-style:italic;line-height:1.75;margin-bottom:5px;}
+.quote-by{font-size:10px;color:#aaa;letter-spacing:.06em;text-transform:uppercase;}
+
+/* Section label */
+.sec-label{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#666;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;}
+.sec-sub{font-weight:400;color:#aaa;letter-spacing:.04em;text-transform:none;font-size:11px;}
+
+/* Tasks */
+.task{display:flex;align-items:flex-start;gap:14px;padding:13px 0;border-bottom:1px solid #f0f0f0;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .15s;}
 .task:last-child{border-bottom:none;}
-.task.done{opacity:.3;}
-.task.done .task-text{text-decoration:line-through;}
-.box{width:14px;height:14px;border:1px solid #2a2a2a;flex-shrink:0;margin-top:3px;position:relative;}
-.box.on{background:#fff;border-color:#fff;}
-.box.on::after{content:'';position:absolute;top:2px;left:2px;width:6px;height:4px;border-left:1.5px solid #000;border-bottom:1.5px solid #000;transform:rotate(-45deg);}
-.task-text{font-size:14px;color:#bbb;line-height:1.5;flex:1;}
-.task-time{font-size:11px;color:#333;margin-top:2px;}
-.vocab-card{border:1px solid #111;padding:18px;margin-bottom:10px;cursor:pointer;transition:border-color .15s;}
-.vocab-card:active{border-color:#333;}
-.vocab-front{font-size:20px;font-weight:600;color:#fff;letter-spacing:-.01em;margin-bottom:4px;}
-.vocab-ph{font-size:11px;color:#333;font-variant-numeric:tabular-nums;}
-.vocab-back{display:none;margin-top:14px;padding-top:14px;border-top:1px solid #111;}
-.vocab-zh{font-size:16px;color:#888;margin-bottom:6px;}
-.vocab-hook{font-size:11px;color:#333;line-height:1.6;}
-.vocab-pos{display:inline-block;font-size:9px;letter-spacing:.1em;text-transform:uppercase;border:1px solid #222;padding:1px 6px;color:#333;margin-bottom:8px;}
+.task.done{opacity:.35;}
+.task.done .task-name{text-decoration:line-through;}
+.box{width:16px;height:16px;border:1.5px solid #ccc;flex-shrink:0;margin-top:2px;position:relative;transition:all .15s;border-radius:1px;}
+.box.on{background:#222;border-color:#222;}
+.box.on::after{content:'';position:absolute;top:2.5px;left:2px;width:8px;height:5px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg);}
+.task-name{font-size:14px;color:#222;line-height:1.5;}
+.task-time{font-size:11px;color:#aaa;margin-top:2px;}
+.done-all{font-size:13px;color:#aaa;padding:14px 0 0;}
+
+/* Vocab */
+.vocab-card{background:#fff;border:1px solid #e8e8e8;border-radius:3px;padding:16px 18px;margin-bottom:8px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:border-color .15s;}
+.vocab-card:active{border-color:#bbb;}
+.vocab-pos{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border:1px solid #ccc;padding:2px 7px;color:#666;margin-bottom:10px;border-radius:1px;}
+.vocab-front{font-size:20px;font-weight:600;color:#111;letter-spacing:-.02em;margin-bottom:3px;}
+.vocab-ph{font-size:11px;color:#aaa;}
+.vocab-hint{font-size:11px;color:#aaa;text-align:right;margin-top:10px;}
+.vocab-back{display:none;margin-top:14px;padding-top:14px;border-top:1px solid #f0f0f0;}
 .vocab-card.open .vocab-back{display:block;}
-.vocab-hint{font-size:10px;color:#222;text-align:right;margin-top:10px;}
-.note-label{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#222;margin-bottom:10px;}
-textarea{width:100%;background:transparent;border:none;color:#444;font-size:13px;font-family:inherit;resize:none;outline:none;min-height:70px;line-height:1.7;}
-textarea::placeholder{color:#1a1a1a;}
-.carryover-note{font-size:11px;color:#333;margin-bottom:14px;}
-.done-msg{font-size:14px;color:#444;padding:16px 0;}
-.err{font-size:12px;color:#f87171;padding:20px 0;}
+.vocab-card.open .vocab-hint{display:none;}
+.vocab-zh{font-size:16px;color:#222;margin-bottom:8px;font-weight:500;}
+.vocab-hook{font-size:12px;color:#777;line-height:1.65;}
+.srs-badge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:10px;margin-left:8px;vertical-align:middle;}
+.srs-new{background:#f0f4ff;color:#4466cc;border:1px solid #c8d4f0;}
+.srs-review{background:#fff8e8;color:#aa7700;border:1px solid #f0dfa0;}
+.srs-strong{background:#f0faf0;color:#338844;border:1px solid #b0dbb0;}
+
+/* Grammar */
+.gram-card{background:#fff;border:1px solid #e8e8e8;border-radius:3px;padding:18px 20px;}
+.gram-title{font-size:12px;font-weight:700;color:#333;margin-bottom:10px;letter-spacing:.03em;}
+.gram-rule{font-size:12px;color:#555;line-height:1.75;}
+.gram-rule code{font-family:'Menlo','Monaco',monospace;font-size:11px;background:#f5f5f5;padding:1px 5px;border-radius:2px;color:#333;}
+.gram-ex{font-size:11px;color:#aaa;font-style:italic;margin-top:10px;padding-top:10px;border-top:1px solid #f0f0f0;line-height:1.6;}
+
+/* Notes */
+.note-label{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#666;margin-bottom:10px;}
+.note-meta{font-size:10px;color:#bbb;margin-bottom:8px;}
+textarea{width:100%;background:#fff;border:1px solid #e8e8e8;border-radius:3px;color:#333;font-size:13px;font-family:inherit;resize:none;outline:none;min-height:90px;line-height:1.7;padding:12px 14px;transition:border-color .15s;}
+textarea:focus{border-color:#bbb;}
+textarea::placeholder{color:#ccc;}
+.save-indicator{font-size:10px;color:#bbb;text-align:right;margin-top:5px;height:14px;}
+
+.err-msg{font-size:12px;color:#cc3333;padding:20px 0;}
+.no-sched{font-size:14px;color:#aaa;padding:8px 0;}
 </style>
 </head>
 <body>
-<div class="app" id="app">
-  <div style="color:#222;font-size:12px;padding:40px 0 0;">Loading...</div>
-</div>
+<div class="app" id="app"><div style="color:#ccc;font-size:12px;padding:40px 0 0;">Loading...</div></div>
 <script>
-// ── Data ──────────────────────────────────────────────
 var EXAM = new Date('2026-05-31');
 var TOTAL = 11;
 
@@ -60,12 +88,12 @@ var SCHEDULE = {
   "2026-05-22":{day:3,tasks:[["關係子句：who/which/whose/whom","15 min"],["不定詞 vs 動名詞複習","15 min"],["Vocab Day 2：財務用語","20 min"],["Priority 21 第2輪","10 min"]]},
   "2026-05-23":{day:4,tasks:[["全科文法綜合練習（26題）","30 min"],["Vocab Day 3：人資招募","20 min"],["TOEIC Part 2 問答題型練習","10 min"]]},
   "2026-05-24":{day:5,tasks:[["主詞動詞一致性（新考點）","30 min"],["Vocab Day 4：會議溝通","20 min"],["錯誤單字複習","10 min"]]},
-  "2026-05-25":{day:6,tasks:[["Part 5 限時模擬（20題，15分鐘內完成）","20 min"],["對答案＋分析錯誤","10 min"],["Vocab Day 5：業務行銷","20 min"],["TOEIC Part 3 短對話練習","10 min"]]},
+  "2026-05-25":{day:6,tasks:[["Part 5 限時模擬（20題，15分鐘內）","20 min"],["對答案＋分析錯誤","10 min"],["Vocab Day 5：業務行銷","20 min"],["TOEIC Part 3 短對話練習","10 min"]]},
   "2026-05-26":{day:7,tasks:[["Part 6 語境題型練習","20 min"],["分詞形容詞＋despite複習","10 min"],["Vocab Day 6：物流運輸","20 min"],["TOEIC Part 4 短獨白練習","10 min"]]},
   "2026-05-27":{day:8,tasks:[["Part 7 閱讀技巧：先看題目再讀文章","20 min"],["單篇閱讀練習","10 min"],["Vocab Day 7：辦公場所","20 min"],["Priority 21 第3輪","10 min"]]},
   "2026-05-28":{day:9,tasks:[["全科模擬考：Part 5+6（計時30分鐘）","30 min"],["對答案＋記錄錯題","20 min"],["聽力綜合複習","10 min"]]},
-  "2026-05-29":{day:10,tasks:[["弱點考點針對複習（根據模擬考錯題）","30 min"],["Priority 21 最終確認","20 min"],["聽力最後練習","10 min"]]},
-  "2026-05-30":{day:11,tasks:[["輕度複習：翻看語法規則表","20 min"],["瀏覽單字卡","10 min"],["放鬆，明天考試",""]]}
+  "2026-05-29":{day:10,tasks:[["弱點考點針對複習","30 min"],["Priority 21 最終確認","20 min"],["聽力最後練習","10 min"]]},
+  "2026-05-30":{day:11,tasks:[["輕度複習：語法規則表","20 min"],["瀏覽單字卡","10 min"],["放鬆，明天考試",""]]}
 };
 
 var QUOTES = [
@@ -86,189 +114,297 @@ var QUOTES = [
   ["A year from now you may wish you had started today.","Karen Lamb"]
 ];
 
+// 21 priority vocabulary words
 var VOCAB = [
   ["allocate","v.","/ˈæləkeɪt/","分配（資源）","al（到）+ locate（定位）→ 把資源定位到某處"],
-  ["expenditure","n.","/ɪkˈspendɪtʃər/","支出、花費","expend（花費）+ iture → 花出去的錢"],
+  ["expenditure","n.","/ɪkˈspendɪtʃər/","支出、花費","expend（花費）+ iture → 花出去的錢；反義：revenue"],
   ["reimburse","v.","/ˌriːɪmˈbɜːrs/","報銷、償還","re（回）+ burse（錢包）→ 把錢放回口袋"],
-  ["surplus","n.","/ˈsɜːrpləs/","盈餘、剩餘","sur（超過）+ plus（加）→ 超出的部分"],
-  ["recruitment","n.","/rɪˈkruːtmənt/","招募、徵才","recruit + ment → 招募這件事"],
-  ["compensation","n.","/ˌkɒmpənˈseɪʃən/","薪酬、補償","compensate + ion → 整體薪酬待遇"],
-  ["eligible","adj.","/ˈelɪdʒɪbəl/","符合資格的","el（選擇）+ ible → 可被選中的"],
+  ["surplus","n.","/ˈsɜːrpləs/","盈餘、剩餘","sur（超過）+ plus（加）→ 超出的部分；反義：deficit"],
+  ["recruitment","n.","/rɪˈkruːtmənt/","招募、徵才","recruit（招募）+ ment → 招募這件事"],
+  ["compensation","n.","/ˌkɒmpənˈseɪʃən/","薪酬、補償","compensate + ion → TOEIC 中指整體薪酬待遇"],
+  ["eligible","adj.","/ˈelɪdʒɪbəl/","符合資格的","el（選擇）+ ible → 可被選中的；-ble 結尾 = 形容詞"],
   ["retain","v.","/rɪˈteɪn/","留住（人才）","re（再）+ tain（保持）→ 繼續保住"],
-  ["tentative","adj.","/ˈtentətɪv/","暫定的","tent（嘗試）+ ative → 試探性的"],
+  ["tentative","adj.","/ˈtentətɪv/","暫定的","tent（嘗試）+ ative → 試探性的、尚未確定的"],
   ["adjourn","v.","/əˈdʒɜːrn/","（會議）休會","ad（到）+ journ（日）→ 到另一天再說"],
   ["unanimous","adj.","/juːˈnænɪməs/","全體一致的","uni（一）+ anim（精神）→ 大家精神合一"],
   ["procurement","n.","/prəˈkjʊərmənt/","採購","procure（取得）+ ment → 採購這件事"],
   ["inventory","n.","/ˈɪnvəntri/","庫存、存貨","invent（找到）→ 找到並列出所有東西"],
   ["dispatch","v.","/dɪˈspætʃ/","發送、派送","dis（分開）+ patch（送出）→ 把貨分送出去"],
-  ["renovation","n.","/ˌrenəˈveɪʃən/","翻新、整修","re（再）+ novate（新）→ 重新變新"],
+  ["renovation","n.","/ˌrenəˈveɪʃən/","翻新、整修","re（再）+ novate（新）→ 重新變新；-tion = 名詞"],
   ["accommodate","v.","/əˈkɒmədeɪt/","容納、提供空間","ac + commodate（使適合）→ 讓空間適合更多人"],
-  ["streamline","v.","/ˈstriːmlaɪn/","簡化、使有效率","stream（水流）+ line → 讓流程像水流一樣順"],
+  ["streamline","v.","/ˈstriːmlaɪn/","簡化、使有效率","stream（水流）+ line → 讓流程像水流一樣順暢"],
   ["incentive","n.","/ɪnˈsentɪv/","激勵措施","incent（刺激）+ ive → 刺激動力的東西"],
-  ["regulatory","adj.","/ˈreɡjələtɔːri/","監管的、法規的","regulate + ory → -ory 結尾是形容詞"],
-  ["fiscal","adj.","/ˈfɪskəl/","財政的","直接記：fiscal year = 財政年度"],
+  ["regulatory","adj.","/ˈreɡjələtɔːri/","監管的、法規的","regulate + ory → -ory 結尾 = 形容詞"],
+  ["fiscal","adj.","/ˈfɪskəl/","財政的","直接記：fiscal year = 財政年度；-al = 形容詞"],
   ["oversee","v.","/ˌoʊvərˈsiː/","監督、管理","over（在上）+ see → 從上往下看"]
 ];
 
-// ── State (in-memory) ──────────────────────────────────
-var taskState = {};
-var vocabOpen = {};
+// Grammar rotation: 8 rules
+var GRAMMAR = [
+  {title:"使役動詞",rules:[["let / make","+ 受詞 + base form"],["get / want + 物","+ pp（物被動完成）"],["get / want + 人","+ to v（人主動去做）"]],ex:"The CEO made all staff complete the training.\nWe need to get the report finalized."},
+  {title:"條件句",rules:[["現實（未來）","if + 現在式 → will + base form"],["非現實（現在）","if + 過去式 → would + base form"],["非現實（過去）","if + had pp → would have + pp"]],ex:"If we had reviewed it carefully, we would not have erred."},
+  {title:"時間子句",rules:[["when / as soon as","永遠現在式，不用 will"],["before / after / until","同上——即使意思是未來"]],ex:"The system alerts as soon as inventory drops below minimum."},
+  {title:"連接詞方向",rules:[["順向因果","accordingly / therefore"],["逆向意外","nevertheless / yet"],["並排對比","while（A 做這個，而 B 做那個）"]],ex:"Sales rose; accordingly, they expanded.\nIt was underfunded; nevertheless, they delivered."},
+  {title:"不定詞 vs 動名詞",rules:[["未來導向","→ to v（plan / decide / refuse / afford）"],["已存在概念","→ ving（enjoy / avoid / consider / finish）"],["介系詞後","→ 永遠 ving（in addition to / tired of）"]],ex:"She avoided making the same mistake.\nThe team is committed to improving the process."},
+  {title:"詞性判斷",rules:[["-tion/-ment/-ity/-cy","→ 名詞"],["-ble/-ive/-al/-ory","→ 形容詞"],["-ly","→ 副詞"],["to + ___","→ 動詞原形"]],ex:"The training proved effective.（連綴動詞後 → 形容詞）\nThe team worked efficiently.（行為動詞後 → 副詞）"},
+  {title:"關係子句",rules:[["who","→ 人（主詞）"],["whom","→ 人（受詞 / 介系詞後）；he/him 測試"],["whose","→ 所有格（空格後緊接名詞）"],["逗號後","→ 只能 who/which，不能 that"]],ex:"The director to whom the report was sent responded immediately."},
+  {title:"分詞形容詞",rules:[["物給出感受","→ -ing（interesting, exhausting）"],["人收到感受","→ -ed（interested, exhausted）"]],ex:"The results were encouraging for the team.\nStaff were overwhelmed by the amount of information."}
+];
 
-// ── Helpers ────────────────────────────────────────────
-function dateStr(d) {
-  var y = d.getFullYear();
-  var m = String(d.getMonth()+1).padStart(2,'0');
-  var day = String(d.getDate()).padStart(2,'0');
-  return y+'-'+m+'-'+day;
+// ── Storage helpers ──────────────────────────────────
+function lsGet(key, def) {
+  try { var v = localStorage.getItem(key); return v !== null ? JSON.parse(v) : def; }
+  catch(e) { return def; }
 }
-function pad2(n){ return String(n).padStart(2,'0'); }
-function todayKey(){ return dateStr(new Date()); }
+function lsSet(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); return true; }
+  catch(e) { return false; }
+}
 
-function daysLeft(){
-  var now = new Date();
-  now.setHours(0,0,0,0);
-  var ex = new Date(EXAM);
-  ex.setHours(0,0,0,0);
-  var diff = Math.round((ex - now) / 86400000);
-  return diff > 0 ? diff : 0;
+// ── SRS Logic ────────────────────────────────────────
+// srsData: { wordIndex: { nextDate: "YYYY-MM-DD", level: 0-4 } }
+// level 0=new, 1=tomorrow, 2=3days, 3=7days, 4=mastered
+var SRS_INTERVALS = [0, 1, 3, 7, 14];
+var SRS_LABELS = ["新單字","明天複習","3天後","1週後","已掌握"];
+var SRS_CLS = ["srs-new","srs-review","srs-review","srs-strong","srs-strong"];
+
+function pad2(n){ return n < 10 ? '0'+n : ''+n; }
+
+function todayKey(){
+  var d = new Date();
+  return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate());
+}
+function addDays(dateStr, n){
+  var d = new Date(dateStr);
+  d.setDate(d.getDate()+n);
+  return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate());
 }
 function todayDisplay(){
   var d = new Date();
   return pad2(d.getMonth()+1)+'/'+pad2(d.getDate());
 }
+function getDaysLeft(){
+  var now = new Date(); now.setHours(0,0,0,0);
+  var ex = new Date(EXAM); ex.setHours(0,0,0,0);
+  var diff = Math.round((ex.getTime()-now.getTime())/86400000);
+  return diff > 0 ? diff : 0;
+}
 function getQuote(){
   var d = new Date();
-  var idx = (d.getFullYear()*366 + d.getMonth()*31 + d.getDate()) % QUOTES.length;
-  return QUOTES[idx];
+  return QUOTES[(d.getMonth()*31+d.getDate()) % QUOTES.length];
 }
-function getTodayVocab(){
+function getGrammar(){
   var d = new Date();
-  var idx = (d.getMonth()*31 + d.getDate()) % VOCAB.length;
-  var words = [];
-  for(var i = 0; i < 4; i++){
-    words.push(VOCAB[(idx+i) % VOCAB.length]);
-  }
-  return words;
+  return GRAMMAR[(d.getMonth()*31+d.getDate()) % GRAMMAR.length];
 }
 
-// ── Render ─────────────────────────────────────────────
+// Get words due today (SRS) + fill to 10 from unreviewed
+function getDueWords(){
+  var srsData = lsGet('srs_data', {});
+  var today = todayKey();
+  var due = [];
+  var newWords = [];
+
+  for(var i=0; i<VOCAB.length; i++){
+    var entry = srsData[i];
+    if(!entry){
+      newWords.push(i);
+    } else if(entry.level < 4 && entry.nextDate <= today){
+      due.push({idx:i, level:entry.level});
+    }
+  }
+
+  // Sort due by level (lower = more urgent)
+  due.sort(function(a,b){ return a.level-b.level; });
+
+  var result = [];
+  for(var j=0; j<due.length && result.length<10; j++) result.push(due[j].idx);
+  for(var k=0; k<newWords.length && result.length<10; k++) result.push(newWords[k]);
+  // fill remaining with any vocab
+  if(result.length < 10){
+    for(var m=0; m<VOCAB.length && result.length<10; m++){
+      if(result.indexOf(m)<0) result.push(m);
+    }
+  }
+  return result;
+}
+
+function getSrsLevel(idx){
+  var srsData = lsGet('srs_data', {});
+  return srsData[idx] ? srsData[idx].level : 0;
+}
+
+function markWordReviewed(idx){
+  var srsData = lsGet('srs_data', {});
+  var cur = srsData[idx] || {level:0};
+  var newLevel = Math.min(cur.level+1, 4);
+  srsData[idx] = { level:newLevel, nextDate: addDays(todayKey(), SRS_INTERVALS[newLevel]) };
+  lsSet('srs_data', srsData);
+}
+
+// ── App state ────────────────────────────────────────
+var taskState = lsGet('tasks_'+todayKey(), {});
+var vocabOpen = {};
+var dueWords = [];
+var saveTimer = null;
+
+function saveTaskState(){
+  lsSet('tasks_'+todayKey(), taskState);
+}
+function saveNote(){
+  var el = document.getElementById('noteArea');
+  if(!el) return;
+  lsSet('note_'+todayKey(), el.value);
+  var ind = document.getElementById('saveInd');
+  if(ind){ ind.textContent = '已儲存'; setTimeout(function(){ if(ind) ind.textContent=''; }, 2000); }
+}
+
+function escHtml(s){
+  if(!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
 function render(){
   var root = document.getElementById('app');
-  if(!root){ return; }
+  if(!root) return;
 
+  dueWords = getDueWords();
   var today = todayKey();
   var sched = SCHEDULE[today] || null;
-  var days = daysLeft();
+  var days = getDaysLeft();
   var disp = todayDisplay();
   var q = getQuote();
-  var vocabWords = getTodayVocab();
-
+  var gram = getGrammar();
   var dayNum = sched ? sched.day : null;
   var pct = dayNum ? Math.round((dayNum/TOTAL)*100) : 0;
-
-  // Count done tasks
   var tasks = sched ? sched.tasks : [];
   var doneCount = 0;
-  for(var i=0; i<tasks.length; i++){
-    if(taskState['t'+i]) doneCount++;
-  }
+  for(var i=0;i<tasks.length;i++){ if(taskState['t'+i]) doneCount++; }
+  var savedNote = lsGet('note_'+today, '');
 
-  var html = '';
+  var h = '';
 
   // Header
-  html += '<div class="brand">TOEIC Study Bot</div>';
-  html += '<div class="meta">'+disp+' &nbsp;|&nbsp; 距考試 '+days+' 天</div>';
-  html += '<div class="target">&#127919; 目標：800 分起</div>';
+  h += '<div class="brand">TOEIC Study Bot</div>';
+  h += '<div class="meta-row">'+disp+' &nbsp;|&nbsp; 距考試 '+days+' 天</div>';
+  h += '<div class="target-row">&#127919; 目標：800 分起</div>';
   if(dayNum){
-    html += '<div class="prog-label"><span>進度 Day '+dayNum+' / '+TOTAL+'</span><span>'+pct+'%</span></div>';
-    html += '<div class="prog-bar"><div class="prog-fill" style="width:'+pct+'%"></div></div>';
+    h += '<div class="prog-top"><span>Day '+dayNum+' / '+TOTAL+'</span><span>'+pct+'%</span></div>';
+    h += '<div class="prog-bar"><div class="prog-fill" style="width:'+pct+'%"></div></div>';
   }
-
-  html += '<hr class="divider">';
+  h += '<hr>';
 
   // Quote
-  html += '<div class="quote">&ldquo;'+q[0]+'&rdquo;</div>';
-  html += '<div class="quote-by">— '+q[1]+'</div>';
-
-  html += '<hr class="divider">';
+  h += '<div class="quote">&ldquo;'+escHtml(q[0])+'&rdquo;</div>';
+  h += '<div class="quote-by">— '+escHtml(q[1])+'</div>';
+  h += '<hr>';
 
   // Tasks
+  h += '<div class="sec-label"><span>今日任務</span><span class="sec-sub">'+doneCount+' / '+tasks.length+' 完成</span></div>';
   if(!sched){
-    html += '<div class="section-label">任務</div>';
-    html += '<div class="done-msg">今天沒有排程任務。</div>';
+    h += '<div class="no-sched">今天沒有排程任務，好好休息。</div>';
   } else {
-    html += '<div class="section-label"><span>今日任務</span><span>'+doneCount+' / '+tasks.length+' 完成</span></div>';
-    for(var i=0; i<tasks.length; i++){
-      var isDone = !!taskState['t'+i];
-      var t = tasks[i];
-      html += '<div class="task'+(isDone?' done':'')+'" data-idx="'+i+'">';
-      html += '<div class="box'+(isDone?' on':'')+'"></div>';
-      html += '<div class="task-text">'+t[0];
-      if(t[1]) html += '<div class="task-time">'+t[1]+'</div>';
-      html += '</div></div>';
+    for(var i=0;i<tasks.length;i++){
+      var done = !!taskState['t'+i];
+      h += '<div class="task'+(done?' done':'')+'" data-idx="'+i+'">';
+      h += '<div class="box'+(done?' on':'')+'"></div>';
+      h += '<div><div class="task-name">'+escHtml(tasks[i][0])+'</div>';
+      if(tasks[i][1]) h += '<div class="task-time">'+escHtml(tasks[i][1])+'</div>';
+      h += '</div></div>';
     }
-    if(doneCount === tasks.length && tasks.length > 0){
-      html += '<div class="done-msg">今日任務完成。</div>';
+    if(doneCount===tasks.length && tasks.length>0){
+      h += '<div class="done-all">今日任務全部完成。</div>';
     }
   }
+  h += '<hr>';
 
-  html += '<hr class="divider">';
-
-  // Vocabulary
-  html += '<div class="section-label">今日單字複習 <span style="font-weight:400;color:#222;">點擊翻面</span></div>';
-  for(var v=0; v<vocabWords.length; v++){
-    var w = vocabWords[v];
-    var isOpen = !!vocabOpen['v'+v];
-    html += '<div class="vocab-card'+(isOpen?' open':'')+'" data-vi="'+v+'">';
-    html += '<div class="vocab-pos">'+w[1]+'</div>';
-    html += '<div class="vocab-front">'+w[0]+'</div>';
-    html += '<div class="vocab-ph">'+w[2]+'</div>';
-    html += '<div class="vocab-hint">點擊查看意思</div>';
-    html += '<div class="vocab-back">';
-    html += '<div class="vocab-zh">'+w[3]+'</div>';
-    html += '<div class="vocab-hook">'+w[4]+'</div>';
-    html += '</div></div>';
+  // Vocab (SRS)
+  h += '<div class="sec-label"><span>今日單字</span><span class="sec-sub">點擊翻面，翻面後標記掌握</span></div>';
+  h += '<div style="font-size:10px;color:#aaa;margin-bottom:12px;">今天 → 明天 → 3天後 → 1週後（科學間隔記憶）</div>';
+  for(var v=0;v<dueWords.length;v++){
+    var wi = dueWords[v];
+    var w = VOCAB[wi];
+    var open = !!vocabOpen['v'+v];
+    var lvl = getSrsLevel(wi);
+    h += '<div class="vocab-card'+(open?' open':'')+'" data-vi="'+v+'" data-wi="'+wi+'">';
+    h += '<div><span class="vocab-pos">'+escHtml(w[1])+'</span>';
+    h += '<span class="srs-badge '+SRS_CLS[lvl]+'">'+SRS_LABELS[lvl]+'</span></div>';
+    h += '<div class="vocab-front">'+escHtml(w[0])+'</div>';
+    h += '<div class="vocab-ph">'+escHtml(w[2])+'</div>';
+    if(!open) h += '<div class="vocab-hint">點擊查看意思</div>';
+    h += '<div class="vocab-back">';
+    h += '<div class="vocab-zh">'+escHtml(w[3])+'</div>';
+    h += '<div class="vocab-hook">'+escHtml(w[4])+'</div>';
+    h += '<div style="margin-top:12px;"><button onclick="markWord('+wi+','+v+')" style="font-size:11px;background:#f5f5f5;border:1px solid #ddd;padding:5px 14px;border-radius:2px;cursor:pointer;color:#444;">✓ 標記已掌握</button></div>';
+    h += '</div></div>';
   }
+  h += '<hr>';
 
-  html += '<hr class="divider">';
+  // Grammar
+  var gram = getGrammar();
+  h += '<div class="sec-label">今日文法複習</div>';
+  h += '<div class="gram-card">';
+  h += '<div class="gram-title">'+escHtml(gram.title)+'</div>';
+  for(var r=0;r<gram.rules.length;r++){
+    h += '<div class="gram-rule"><code>'+escHtml(gram.rules[r][0])+'</code> '+escHtml(gram.rules[r][1])+'</div>';
+  }
+  h += '<div class="gram-ex">'+escHtml(gram.ex).replace(/\n/g,'<br>')+'</div>';
+  h += '</div><hr>';
 
   // Notes
-  html += '<div class="note-label">筆記</div>';
-  html += '<textarea id="noteArea" placeholder="今天學到的重點..."></textarea>';
+  h += '<div class="note-label">筆記</div>';
+  h += '<div class="note-meta">自動儲存於此裝置</div>';
+  h += '<textarea id="noteArea" placeholder="今天學到的重點...">'+escHtml(savedNote)+'</textarea>';
+  h += '<div class="save-indicator" id="saveInd"></div>';
 
-  root.innerHTML = html;
+  root.innerHTML = h;
 
-  // Bind task clicks
-  var taskEls = root.querySelectorAll('.task');
-  for(var j=0; j<taskEls.length; j++){
+  // Bind tasks
+  var tEls = root.querySelectorAll('.task');
+  for(var j=0;j<tEls.length;j++){
     (function(el){
-      el.addEventListener('click', function(){
+      el.onclick = function(){
         var idx = el.getAttribute('data-idx');
         taskState['t'+idx] = !taskState['t'+idx];
+        saveTaskState();
         render();
-      });
-    })(taskEls[j]);
+      };
+    })(tEls[j]);
   }
 
-  // Bind vocab clicks
-  var vocabEls = root.querySelectorAll('.vocab-card');
-  for(var k=0; k<vocabEls.length; k++){
+  // Bind vocab cards (toggle open)
+  var vEls = root.querySelectorAll('.vocab-card');
+  for(var k=0;k<vEls.length;k++){
     (function(el){
-      el.addEventListener('click', function(){
+      el.onclick = function(e){
+        if(e.target.tagName==='BUTTON') return;
         var vi = el.getAttribute('data-vi');
         vocabOpen['v'+vi] = !vocabOpen['v'+vi];
         render();
-      });
-    })(vocabEls[k]);
+      };
+    })(vEls[k]);
+  }
+
+  // Bind note
+  var na = document.getElementById('noteArea');
+  if(na){
+    na.onkeyup = function(){
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveNote, 800);
+    };
   }
 }
 
-// ── Run ────────────────────────────────────────────────
-try {
+function markWord(wi, vi){
+  markWordReviewed(wi);
+  vocabOpen['v'+vi] = false;
   render();
-} catch(err) {
-  var root = document.getElementById('app');
-  if(root) root.innerHTML = '<div class="err">Error: ' + err.message + '</div>';
+}
+
+try{ render(); }
+catch(e){
+  var r=document.getElementById('app');
+  if(r) r.innerHTML='<div class="err-msg">Error: '+e.message+'<br><small>'+e.stack+'</small></div>';
 }
 </script>
 </body>
